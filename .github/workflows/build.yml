@@ -1,0 +1,73 @@
+on: release
+
+name: Build admissions queue
+
+jobs:
+  linux:
+    name: Linux Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - x86_64-unknown-linux-gnu
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          override: true
+      - uses: actions-rs/cargo@v1
+        with:
+          use-cross: false
+          command: build
+          args: --release --target=${{ matrix.target }}
+      - name: Push abit-parser artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.target }}
+          path: target/${{ matrix.target }}/release/abit-parser
+      - name: Push queue-bot artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.target }}
+          path: target/${{ matrix.target }}/release/queue-bot
+      - name: Push queue-web artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.target }}
+          path: target/${{ matrix.target }}/release/queue-web
+  windows:
+    name: Windows Build
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        target:
+          - x86_64-pc-windows-msvc
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          override: true
+      - uses: actions-rs/cargo@v1
+        with:
+          use-cross: false
+          command: build
+          args: --release --target=${{ matrix.target }}
+      - name: Push abit-parser artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.target }}
+          path: target/${{ matrix.target }}/release/abit-parser.exe
+      - name: Push queue-bot artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.target }}
+          path: target/${{ matrix.target }}/release/queue-bot.exe
+      - name: Push queue-web artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.target }}
+          path: target/${{ matrix.target }}/release/queue-web.exe
