@@ -22,7 +22,7 @@ features = ["derive"]
 
 [dependencies.sqlx]
 version = "0.5"
-features = ["runtime-tokio-native-tls", "postgres", "uuid", "chrono"]
+features = ["runtime-tokio-rustls", "postgres", "uuid", "chrono"]
 
 [dependencies.tokio]
 version = "1"
