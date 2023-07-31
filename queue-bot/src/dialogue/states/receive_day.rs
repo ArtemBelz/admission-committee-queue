@@ -15,7 +15,7 @@ async fn receive_day(
     cx: TransitionIn<AutoSend<Bot>>,
     ans: String,
 ) -> TransitionOut<Dialogue> {
-    match NaiveDate::parse_from_str(&format!("{}.2022", ans), "%d.%m.%Y") {
+    match NaiveDate::parse_from_str(&format!("{}.2023", ans), "%d.%m.%Y") {
         Ok(date) => match Queue::global().get_intervals_keyboard(date).await {
             Ok(keyboard) => {
                 cx.answer("Оберіть проміжок часу")
